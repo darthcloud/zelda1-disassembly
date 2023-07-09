@@ -2,6 +2,7 @@
 *.bin
 *.nes
 *.o
+*.dbg
 bak/
 bin/
 ext/
