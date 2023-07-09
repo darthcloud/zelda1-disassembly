@@ -56,7 +56,7 @@ function ExtractBins()
 		$binDir = split-path $binPath
 		mkdir $binDir -ErrorAction ignore > $null
 
-		$offset = [int] $bin.Offset + 16
+		$offset = [int] $bin.Offset
 
 		$buf = new-object byte[] $bin.Length
 		[Array]::Copy( $image, $offset, $buf, 0, $bin.Length )
@@ -100,11 +100,8 @@ if ( !$assemblyPassed )
 }
 
 echo "Linking"
-.\ext\ld65 -o bin\Z.bin -C src\Z.cfg $objPaths --dbgfile symbols.dbg
+.\ext\ld65 -o bin\Z.nes -C src\Z.cfg $objPaths --dbgfile symbols.dbg
 if ( $LastExitCode -ne 0 ) { exit }
-
-echo "Combining raw ROM with NES header"
-JoinFiles bin\Z.nes -in OriginalNesHeader.bin, bin\Z.bin
 
 if ( !$NoVerify )
 {
